@@ -1,0 +1,19 @@
+.counter-page {
+  @include middle-content(80%, center);
+  margin-top: 75px;
+  position: relative;
+
+  &__value {
+    @include set-font(40px);
+    margin-bottom: 20px;
+  }
+
+  &__buttons {
+    margin: 0 40%;
+    @include flex-content(center, null, space-around);
+
+    &--item {
+      width: 95px;
+    }
+  }
+}

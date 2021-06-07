@@ -1,0 +1,31 @@
+.employees {
+  @include middle-content(80%, left);
+  margin-top: 75px;
+  position: relative;
+
+  &__title {
+    margin-bottom: 1em;
+    text-align: center;
+  }
+
+  &__container {
+    max-width: 80%;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  &__btn {
+    &--add {
+      margin-bottom: 20px;
+      background-color: #212529;
+      border-color: #212529;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: #212529;
+        border-color: #212529;
+      }
+    }
+  }
+}

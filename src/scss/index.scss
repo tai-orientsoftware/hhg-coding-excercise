@@ -1,0 +1,12 @@
+@import '~antd/dist/antd.css';
+
+@import 'default';
+@import 'mixins';
+
+/* Components */
+@import '../components/GoBackButton/style.scss';
+
+/* Pages */
+@import '../pages/Home/style.scss';
+@import '../pages/Counter/style.scss';
+@import '../pages/Employees/style.scss';

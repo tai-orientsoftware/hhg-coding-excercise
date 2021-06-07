@@ -1,0 +1,33 @@
+@mixin middle-content($max-width, $text-align: null) {
+  max-width: $max-width;
+  width: 100%;
+  margin: 0 auto;
+  text-align: $text-align;
+}
+
+@mixin flex-content(
+  $align-items: null,
+  $flex-direction: null,
+  $justify-content: null,
+  $flex-wrap: null
+) {
+  display: flex;
+  align-items: $align-items;
+  flex-direction: $flex-direction;
+  justify-content: $justify-content;
+  flex-wrap: $flex-wrap;
+}
+
+@mixin set-font(
+  $font-size,
+  $line-height: null,
+  $font-weight: 400,
+  $color: #000000,
+  $font-family: null
+) {
+  font-size: $font-size;
+  line-height: $line-height;
+  font-weight: $font-weight;
+  color: $color;
+  font-family: $font-family;
+}

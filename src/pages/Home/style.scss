@@ -1,0 +1,13 @@
+.home-page {
+  @include middle-content(90%, center);
+  padding-top: 75px;
+
+  &__title {
+    margin-bottom: 1em;
+  }
+
+  &__redirect-btn {
+    margin: 0 40%;
+    @include flex-content(center, null, space-around);
+  }
+}
