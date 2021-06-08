@@ -3,9 +3,10 @@ import { Button, Form, Table } from 'antd';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 import { addEmployeeAPI, getEmployeesAPI } from '../../apis/employeeAPI';
 import { GoBackButton } from '../../components';
-import { DEFAULT_PAGE_LIMIT } from '../../constants';
+import { DEFAULT_PAGE_LIMIT, NOTIFICATION_TYPE } from '../../constants';
 import usePagination from '../../hooks/usePagination';
 import useSorter from '../../hooks/useSorter';
+import { pushNotification } from '../../utils';
 import { AddEmployeeForm } from './components';
 import * as actions from './state/actions';
 import { employeesReducer, initialState } from './state/reducer';
@@ -39,11 +40,15 @@ const Employees = (): JSX.Element => {
     addEmployeeAPI(data)
       .then(res => {
         dispatch(actions.addEmployeeSuccess(res));
+        pushNotification('Add employee success!', NOTIFICATION_TYPE.SUCCESS);
         addEmployeeForm.resetFields();
         setToggleAddEmployeeForm(false);
         resetPagination();
       })
-      .catch(err => dispatch(actions.addEmployeeFailure(err)));
+      .catch(err => {
+        dispatch(actions.addEmployeeFailure(err));
+        pushNotification('Add employee fail!', NOTIFICATION_TYPE.ERROR);
+      });
   };
 
   /* useEffect */
