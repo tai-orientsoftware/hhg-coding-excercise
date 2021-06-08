@@ -1,63 +1,60 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Table } from 'antd';
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { addEmployeeAPI, getEmployeesAPI } from '../../apis/employeeAPI';
 import { GoBackButton } from '../../components';
-import { DEFAULT_PAGE_LIMIT, NOTIFICATION_TYPE } from '../../constants';
-import usePagination from '../../hooks/usePagination';
-import useSorter from '../../hooks/useSorter';
-import { pushNotification } from '../../utils';
-import { AddEmployeeForm } from './components';
-import * as actions from './state/actions';
-import { employeesReducer, initialState } from './state/reducer';
-import columns from './utils/columns';
+import { DEFAULT_PAGE_LIMIT } from '../../constants';
+import useFetchEmployees from '../../hooks/useFetchEmployees';
+import usePostEmployee from '../../hooks/usePostEmployee';
+import columns from './columns';
+import { AdditionEmployeeForm } from './components';
 
 const Employees = (): JSX.Element => {
   /* useState */
-  const [toggleAddEmployeeForm, setToggleAddEmployeeForm] =
+  const [toggleAdditionEmployeeForm, setToggleAdditionEmployeeForm] =
     useState<boolean>(false);
+  const [effect, setEffect] = useState<number>(0);
 
-  /* useReducer */
-  const [state, dispatch] = useReducer(employeesReducer, initialState);
+  const [additionEmployeeForm] = Form.useForm();
 
-  const [addEmployeeForm] = Form.useForm();
-
-  /* custom hooks */
-  const { pagination, goToPage, resetPagination } = usePagination();
-  const { sorter } = useSorter();
+  /* Custom hooks */
+  const {
+    state,
+    fetchEmployees,
+    pagination,
+    onChangePagination,
+    resetPagination,
+  } = useFetchEmployees(getEmployeesAPI);
+  const { postEmployee } = usePostEmployee(addEmployeeAPI);
 
   const handleTableChange = useCallback(
-    ({ current }) => goToPage(current),
-    [goToPage]
+    ({ current }) => onChangePagination({ page: current }),
+    [onChangePagination]
   );
 
-  const handleToggleAddEmployeeForm = useCallback(() => {
-    setToggleAddEmployeeForm(toggle => !toggle);
+  const refreshPage = useCallback(() => {
+    setEffect(effect + 1);
+  }, [effect]);
+
+  const handleToggleAdditionEmployeeForm = useCallback(() => {
+    setToggleAdditionEmployeeForm(toggle => !toggle);
   }, []);
 
-  const handleSubmitForm = (data: IAddEmployeeData) => {
-    dispatch(actions.addEmployeeRequest());
-    addEmployeeAPI(data)
-      .then(res => {
-        dispatch(actions.addEmployeeSuccess(res));
-        pushNotification('Add employee success!', NOTIFICATION_TYPE.SUCCESS);
-        addEmployeeForm.resetFields();
-        setToggleAddEmployeeForm(false);
-        resetPagination();
-      })
-      .catch(err => {
-        dispatch(actions.addEmployeeFailure(err));
-        pushNotification('Add employee fail!', NOTIFICATION_TYPE.ERROR);
-      });
-  };
+  const handleSubmitForm = useCallback(
+    (data: IAddEmployeeData) => {
+      postEmployee(data);
+      additionEmployeeForm.resetFields();
+      resetPagination();
+      refreshPage();
+      setToggleAdditionEmployeeForm(false);
+    },
+    [additionEmployeeForm, postEmployee, resetPagination, refreshPage]
+  );
 
   /* useEffect */
   useEffect(() => {
-    dispatch(actions.getEmployeesRequest());
-    getEmployeesAPI({ ...pagination, ...sorter })
-      .then(res => dispatch(actions.getEmployeesSuccess(res)))
-      .catch(err => dispatch(actions.getEmployeesFailure(err)));
-  }, [pagination, sorter]);
+    fetchEmployees();
+  }, [fetchEmployees, effect]);
 
   return (
     <div className="employees">
@@ -67,15 +64,15 @@ const Employees = (): JSX.Element => {
         <Button
           className="employees__btn--add"
           type="primary"
-          onClick={handleToggleAddEmployeeForm}
+          onClick={handleToggleAdditionEmployeeForm}
         >
           <PlusOutlined /> Add new
         </Button>
-        <AddEmployeeForm
-          form={addEmployeeForm}
-          visible={toggleAddEmployeeForm}
+        <AdditionEmployeeForm
+          form={additionEmployeeForm}
+          visible={toggleAdditionEmployeeForm}
           onSubmit={handleSubmitForm}
-          onClose={handleToggleAddEmployeeForm}
+          onClose={handleToggleAdditionEmployeeForm}
         />
         <Table
           className="employees__table"

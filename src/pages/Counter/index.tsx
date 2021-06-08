@@ -2,7 +2,7 @@ import { Button } from 'antd';
 import React, { useCallback, useState } from 'react';
 import { GoBackButton } from '../../components';
 
-const Counter = (): JSX.Element => {
+function Counter(): JSX.Element {
   const [counter, setCounter] = useState<number>(0);
 
   const handleIncreaseButton = useCallback(() => {
@@ -34,6 +34,6 @@ const Counter = (): JSX.Element => {
       </div>
     </div>
   );
-};
+}
 
 export default Counter;

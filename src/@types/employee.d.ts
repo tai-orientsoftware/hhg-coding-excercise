@@ -9,7 +9,6 @@ interface IEmployeesState {
   isLoading: boolean;
   data: any;
   total: number;
-  effect: number;
 }
 
 interface IGetEmployeesParams {

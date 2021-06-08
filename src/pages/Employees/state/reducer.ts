@@ -11,7 +11,6 @@ export const initialState: IEmployeesState = {
   isLoading: true,
   data: [],
   total: 0,
-  effect: 0,
 };
 
 export const employeesReducer = (
@@ -45,7 +44,6 @@ export const employeesReducer = (
       return {
         ...state,
         isLoading: false,
-        effect: state.effect + 1,
       };
     case ADD_EMPLOYEE_FAILURE:
       return {

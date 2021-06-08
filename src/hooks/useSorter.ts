@@ -11,10 +11,10 @@ type UseSorterProps = {
   resetSorter: () => void;
 };
 
-const useSorter = (
+function useSorter(
   sortBy: string = DEFAULT_SORT_BY,
   order: string = DEFAULT_SORT_ORDER
-): UseSorterProps => {
+): UseSorterProps {
   const [sorter, setSorter] = useState({ sortBy, order });
 
   const changeSortField = useCallback(
@@ -37,6 +37,6 @@ const useSorter = (
     changeSortOrder,
     resetSorter,
   };
-};
+}
 
 export default useSorter;

@@ -3,7 +3,7 @@ import { Button } from 'antd';
 import React from 'react';
 import { useHistory } from 'react-router-dom';
 
-const GoBackButton = ({ to }: { to: string }): JSX.Element => {
+function GoBackButton({ to }: { to: string }): JSX.Element {
   const history = useHistory();
 
   return (
@@ -15,6 +15,6 @@ const GoBackButton = ({ to }: { to: string }): JSX.Element => {
       <ArrowLeftOutlined />
     </Button>
   );
-};
+}
 
 export default GoBackButton;

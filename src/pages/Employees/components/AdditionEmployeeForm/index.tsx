@@ -10,19 +10,19 @@ const tailLayout = {
   wrapperCol: { offset: 6, span: 16 },
 };
 
-type AddEmployeeFormProps = {
+type AdditionEmployeeFormProps = {
   form: FormInstance;
   visible: boolean;
   onSubmit: (data: any) => void;
   onClose: () => void;
 };
 
-const AddEmployeeForm = ({
+function AdditionEmployeeForm({
   form,
   visible,
   onSubmit,
   onClose,
-}: AddEmployeeFormProps): JSX.Element => {
+}: AdditionEmployeeFormProps): JSX.Element {
   return (
     <Modal
       title="ADD NEW EMPLOYEE"
@@ -48,7 +48,9 @@ const AddEmployeeForm = ({
         <Form.Item
           name="email"
           label="Email"
-          rules={[{ required: true, message: 'Email is required' }]}
+          rules={[
+            { required: true, type: 'email', message: 'Email is required' },
+          ]}
         >
           <Input placeholder="Email" />
         </Form.Item>
@@ -67,6 +69,6 @@ const AddEmployeeForm = ({
       </Form>
     </Modal>
   );
-};
+}
 
-export default AddEmployeeForm;
+export default AdditionEmployeeForm;
