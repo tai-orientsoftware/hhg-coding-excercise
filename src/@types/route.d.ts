@@ -1,7 +1,7 @@
-interface Route {
+interface IRoute {
   name: string;
   path: string;
   isExact?: boolean;
   component: (props: any) => JSX.Element;
-  routes?: Route[];
+  routes?: IRoute[];
 }

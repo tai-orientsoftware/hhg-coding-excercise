@@ -8,6 +8,7 @@ type UseSorterProps = {
   };
   changeSortField: (field: string) => void;
   changeSortOrder: (direction: string) => void;
+  onSorterChanges: (config: { field: string; direction: string }) => void;
   resetSorter: () => void;
 };
 
@@ -27,6 +28,11 @@ function useSorter(
     [sorter]
   );
 
+  const onSorterChanges = useCallback(
+    config => setSorter({ ...sorter, ...config }),
+    [sorter]
+  );
+
   const resetSorter = useCallback(() => {
     setSorter({ sortBy: DEFAULT_SORT_BY, order: DEFAULT_SORT_ORDER });
   }, []);
@@ -35,6 +41,7 @@ function useSorter(
     sorter,
     changeSortField,
     changeSortOrder,
+    onSorterChanges,
     resetSorter,
   };
 }

@@ -3,9 +3,9 @@ import { DEFAULT_PAGE_LIMIT, DEFAULT_PAGE_SELECTED } from '../constants';
 
 type UsePagination = {
   pagination: { page: number; limit: number };
-  setCurrentPage: (currentPage: number) => void;
+  changeCurrentPage: (currentPage: number) => void;
   changePageLimit: (size: number) => void;
-  onChangePagination: (config: any) => void;
+  onChangePagination: (config: { page: number; limit: number }) => void;
   resetPagination: () => void;
 };
 
@@ -15,7 +15,7 @@ function usePagination(
 ): UsePagination {
   const [pagination, setPagination] = useState({ page, limit });
 
-  const setCurrentPage = useCallback(
+  const changeCurrentPage = useCallback(
     currentPage => setPagination({ ...pagination, page: currentPage }),
     [pagination]
   );
@@ -36,7 +36,7 @@ function usePagination(
 
   return {
     pagination,
-    setCurrentPage,
+    changeCurrentPage,
     changePageLimit,
     onChangePagination,
     resetPagination,

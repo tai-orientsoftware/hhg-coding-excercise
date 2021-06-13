@@ -5,43 +5,31 @@ import {
   employeesReducer,
   initialState,
 } from '../pages/Employees/state/reducer';
-import usePagination from './usePagination';
-import useSorter from './useSorter';
 
 type UseFetchEmployees = {
   state: IEmployeesState;
   fetchEmployees: (params?: any) => void;
-  pagination: any;
-  onChangePagination: (config: any) => void;
-  resetPagination: () => void;
 };
 
 function useFetchEmployees(
-  callback: (data?: any) => AxiosPromise
+  callback: (payload?: any) => AxiosPromise
 ): UseFetchEmployees {
   const [state, dispatch] = useReducer(employeesReducer, initialState);
-  const { pagination, onChangePagination, resetPagination } = usePagination();
-  const { sorter } = useSorter();
 
-  const fetchEmployees = useCallback(async () => {
-    const params = { ...pagination, ...sorter };
+  const fetchEmployees = useCallback(
+    async (params?) => {
+      try {
+        dispatch(actions.getEmployeesRequest());
+        const res = await callback(params);
+        dispatch(actions.getEmployeesSuccess(res));
+      } catch (err) {
+        dispatch(actions.getEmployeesFailure(err));
+      }
+    },
+    [callback, dispatch]
+  );
 
-    try {
-      dispatch(actions.getEmployeesRequest());
-      const res = await callback(params);
-      dispatch(actions.getEmployeesSuccess(res));
-    } catch (err) {
-      dispatch(actions.getEmployeesFailure(err));
-    }
-  }, [callback, pagination, sorter]);
-
-  return {
-    state,
-    fetchEmployees,
-    pagination,
-    onChangePagination,
-    resetPagination,
-  };
+  return { state, fetchEmployees };
 }
 
 export default useFetchEmployees;

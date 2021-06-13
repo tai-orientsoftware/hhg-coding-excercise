@@ -1,6 +1,6 @@
 import { Counter, Employees, Home } from '../pages';
 
-const routes: Route[] = [
+const routes: IRoute[] = [
   {
     name: 'Home',
     path: '/',

@@ -16,7 +16,7 @@ function Counter(): JSX.Element {
   return (
     <div className="counter-page">
       <GoBackButton to="/" />
-      <h1 className="counter-page__title">Counter pages</h1>
+      <h1 className="counter-page__title">Counter page</h1>
       <h2 className="counter-page__value">{counter}</h2>
       <div className="counter-page__buttons">
         <Button

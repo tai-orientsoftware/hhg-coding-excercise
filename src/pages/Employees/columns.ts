@@ -1,11 +1,9 @@
-import { ColumnsType } from 'antd/lib/table';
-
 type Column = {
   title: string;
   dataIndex: string;
 };
 
-const columns: ColumnsType<Column> = [
+const columns: Column[] = [
   {
     title: 'Name',
     dataIndex: 'name',

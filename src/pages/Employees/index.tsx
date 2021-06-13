@@ -5,7 +5,9 @@ import { addEmployeeAPI, getEmployeesAPI } from '../../apis/employeeAPI';
 import { GoBackButton } from '../../components';
 import { DEFAULT_PAGE_LIMIT } from '../../constants';
 import useFetchEmployees from '../../hooks/useFetchEmployees';
+import usePagination from '../../hooks/usePagination';
 import usePostEmployee from '../../hooks/usePostEmployee';
+import useSorter from '../../hooks/useSorter';
 import columns from './columns';
 import { AdditionEmployeeForm } from './components';
 
@@ -13,48 +15,39 @@ const Employees = (): JSX.Element => {
   /* useState */
   const [toggleAdditionEmployeeForm, setToggleAdditionEmployeeForm] =
     useState<boolean>(false);
-  const [effect, setEffect] = useState<number>(0);
 
   const [additionEmployeeForm] = Form.useForm();
 
   /* Custom hooks */
-  const {
-    state,
-    fetchEmployees,
-    pagination,
-    onChangePagination,
-    resetPagination,
-  } = useFetchEmployees(getEmployeesAPI);
+  const { pagination, changeCurrentPage } = usePagination();
+  const { sorter } = useSorter();
+  const { state, fetchEmployees } = useFetchEmployees(getEmployeesAPI);
   const { postEmployee } = usePostEmployee(addEmployeeAPI);
 
   const handleTableChange = useCallback(
-    ({ current }) => onChangePagination({ page: current }),
-    [onChangePagination]
+    ({ current }) => changeCurrentPage(current),
+    [changeCurrentPage]
   );
-
-  const refreshPage = useCallback(() => {
-    setEffect(effect + 1);
-  }, [effect]);
 
   const handleToggleAdditionEmployeeForm = useCallback(() => {
     setToggleAdditionEmployeeForm(toggle => !toggle);
   }, []);
 
   const handleSubmitForm = useCallback(
-    (data: IAddEmployeeData) => {
-      postEmployee(data);
+    async (data: FormData) => {
+      await postEmployee(data);
       additionEmployeeForm.resetFields();
-      resetPagination();
-      refreshPage();
+      changeCurrentPage(1);
       setToggleAdditionEmployeeForm(false);
     },
-    [additionEmployeeForm, postEmployee, resetPagination, refreshPage]
+    [additionEmployeeForm, postEmployee, changeCurrentPage]
   );
 
   /* useEffect */
   useEffect(() => {
-    fetchEmployees();
-  }, [fetchEmployees, effect]);
+    const params = { ...pagination, ...sorter };
+    fetchEmployees(params);
+  }, [fetchEmployees, pagination, sorter]);
 
   return (
     <div className="employees">

@@ -1,5 +1,5 @@
 import { AxiosPromise } from 'axios';
-import { useReducer } from 'react';
+import { useCallback, useReducer } from 'react';
 import { NOTIFICATION_TYPE } from '../constants';
 import {
   addEmployeeFailure,
@@ -18,21 +18,26 @@ type UsePostEmployee = {
 };
 
 function usePostEmployee(
-  callback: (params?: any) => AxiosPromise
+  callback: (payload?: any) => AxiosPromise
 ): UsePostEmployee {
   const [state, dispatch] = useReducer(employeesReducer, initialState);
 
-  const postEmployee = async (params?: any) => {
-    try {
-      dispatch(addEmployeeRequest());
-      const res = await callback(params);
-      dispatch(addEmployeeSuccess(res));
-      pushNotification('Add employee success!', NOTIFICATION_TYPE.SUCCESS);
-    } catch (err) {
-      dispatch(addEmployeeFailure(err));
-      pushNotification('Add employee fail!', NOTIFICATION_TYPE.ERROR);
-    }
-  };
+  // const { state, dispatch } = useContext(EmployeesContext);
+
+  const postEmployee = useCallback(
+    async (data?: IAddEmployeeData) => {
+      try {
+        dispatch(addEmployeeRequest());
+        const res = await callback(data);
+        dispatch(addEmployeeSuccess(res));
+        pushNotification('Add employee success!', NOTIFICATION_TYPE.SUCCESS);
+      } catch (err) {
+        dispatch(addEmployeeFailure(err));
+        pushNotification('Add employee fail!', NOTIFICATION_TYPE.ERROR);
+      }
+    },
+    [callback, dispatch]
+  );
 
   return { state, postEmployee };
 }

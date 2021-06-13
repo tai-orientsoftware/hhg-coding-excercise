@@ -7,8 +7,9 @@ interface IEmployee {
 
 interface IEmployeesState {
   isLoading: boolean;
-  data: any;
+  data: IEmployee[];
   total: number;
+  error?: any;
 }
 
 interface IGetEmployeesParams {

@@ -1,16 +1,10 @@
-import {
-  ADD_EMPLOYEE_FAILURE,
-  ADD_EMPLOYEE_REQUEST,
-  ADD_EMPLOYEE_SUCCESS,
-  GET_EMPLOYEES_FAILURE,
-  GET_EMPLOYEES_REQUEST,
-  GET_EMPLOYEES_SUCCESS,
-} from './actions';
+import * as actions from './actions';
 
 export const initialState: IEmployeesState = {
   isLoading: true,
   data: [],
   total: 0,
+  error: null,
 };
 
 export const employeesReducer = (
@@ -18,37 +12,41 @@ export const employeesReducer = (
   action: IAction
 ): IEmployeesState => {
   switch (action.type) {
-    case GET_EMPLOYEES_REQUEST:
+    case actions.GET_EMPLOYEES_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
-    case GET_EMPLOYEES_SUCCESS:
+    case actions.GET_EMPLOYEES_SUCCESS:
       return {
         ...state,
         isLoading: false,
         data: action.payload.employees,
         total: action.payload.total,
       };
-    case GET_EMPLOYEES_FAILURE:
+    case actions.GET_EMPLOYEES_FAILURE:
       return {
         ...state,
         isLoading: false,
+        error: action.payload,
       };
-    case ADD_EMPLOYEE_REQUEST:
+    case actions.ADD_EMPLOYEE_REQUEST:
       return {
         ...state,
         isLoading: true,
       };
-    case ADD_EMPLOYEE_SUCCESS:
+    case actions.ADD_EMPLOYEE_SUCCESS:
       return {
         ...state,
         isLoading: false,
+        // data: [action.payload, ...state.data],
+        // total: state.total + 1,
       };
-    case ADD_EMPLOYEE_FAILURE:
+    case actions.ADD_EMPLOYEE_FAILURE:
       return {
         ...state,
         isLoading: false,
+        error: action.payload,
       };
     default:
       return state;
